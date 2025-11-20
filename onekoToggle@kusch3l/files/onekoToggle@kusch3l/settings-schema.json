@@ -1,0 +1,12 @@
+{
+  "option_icon" : {
+      "type": "combobox",
+      "default": "oneko",
+      "options": [
+        ["oneko", "Oneko"],
+        ["dark", "Simple - Dark"],
+        ["bright", "Simple - Bright"]
+      ],
+      "description": "Pick which icon you want to use:"
+    }
+}

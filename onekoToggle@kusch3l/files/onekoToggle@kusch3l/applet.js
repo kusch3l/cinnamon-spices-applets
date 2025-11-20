@@ -18,6 +18,9 @@ const {
     remove_all_sources
 } = require("./lib/mainloopTools");
 const { to_string } = require("./lib/to-string");
+const Settings = imports.ui.settings;
+
+
 
 const Gettext = imports.gettext;
 Gettext.bindtextdomain(UUID, HOME + "/.local/share/locale");
@@ -37,6 +40,12 @@ class OnekoToggle extends Applet.IconApplet {
         this.orientation = orientation;
         this.updateIcon();
         this._tooltip_ok();
+        this.settings = new Settings.AppletSettings(this, metadata["uuid"], instanceId);
+        this.settings.bindProperty(Settings.BindingDirection.IN,
+                           "option_icon",
+                           "option_icon",
+                           this.on_settings_changed,
+                           null);
         // make executable the script oneko.sh:
         Util.spawnCommandLine(`/usr/bin/env bash -c 'chmod +x ${ONEKO_SCRIPT}'`);
     }
@@ -123,6 +132,12 @@ class OnekoToggle extends Applet.IconApplet {
     on_applet_removed_from_panel(deleteconfig) {
         remove_all_sources();
     }
+
+    on_settings_changed() {
+        // React to setting change, e.g., update icon based on this.option_icon
+        if (DEBUG) global.log("Setting changed to: " + this.option_icon);
+        this.updateIcon();
+}
 }
 
 function main(metadata, orientation, panelHeight, instanceId) {
