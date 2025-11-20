@@ -1,10 +1,10 @@
 const Applet = imports.ui.applet;
 const GLib = imports.gi.GLib;
 const St = imports.gi.St;
-const Util = imports.misc.util;
 const HOME = GLib.get_home_dir();
 const UUID = "onekoToggle@kusch3l";
 const APPLET_DIR = HOME + "/.local/share/cinnamon/applets/" + UUID;
+const Util = imports.misc.util;
 const ONEKO_SCRIPT = APPLET_DIR + "/oneko.sh";
 const DEBUG = false;
 const {
@@ -38,14 +38,14 @@ class OnekoToggle extends Applet.IconApplet {
         super(orientation, panel_height, instanceId);
         if (DEBUG) global.log("onekoToggle is initialized");
         this.orientation = orientation;
-        this.updateIcon();
         this._tooltip_ok();
         this.settings = new Settings.AppletSettings(this, metadata["uuid"], instanceId);
-        this.settings.bindProperty(Settings.BindingDirection.IN,
-                           "option_icon",
-                           "option_icon",
-                           this.on_settings_changed,
-                           null);
+        this.settings.bind("option_icon","option_icon",this.on_settings_changed);
+        this.settings.bind("option_custom","option_custom",this.on_settings_changed);
+        this.settings.bind("option_running","option_running",this.on_settings_changed);
+        this.settings.bind("option_stopped","option_stopped",this.on_settings_changed);
+
+        this.updateIcon();
         // make executable the script oneko.sh:
         Util.spawnCommandLine(`/usr/bin/env bash -c 'chmod +x ${ONEKO_SCRIPT}'`);
     }
@@ -121,10 +121,10 @@ class OnekoToggle extends Applet.IconApplet {
 
     updateIcon() {
         if (this.checkIfProgramRunning("oneko")) {
-            this.set_applet_icon_name("running");
+            this.set_applet_icon_name(this.option_icon +"_running");
             if (DEBUG) global.log("oneko is running");
         } else {
-            this.set_applet_icon_name("stopped");
+            this.set_applet_icon_name(this.option_icon + "_stopped");
             if (DEBUG) global.log("oneko is stopped");
         }
     }
@@ -134,7 +134,7 @@ class OnekoToggle extends Applet.IconApplet {
     }
 
     on_settings_changed() {
-        // React to setting change, e.g., update icon based on this.option_icon
+        this.updateIcon();
         if (DEBUG) global.log("Setting changed to: " + this.option_icon);
         this.updateIcon();
 }

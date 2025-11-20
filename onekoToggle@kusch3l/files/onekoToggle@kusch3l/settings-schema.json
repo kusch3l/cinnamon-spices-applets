@@ -9,7 +9,7 @@
       "options": {
         "Oneko" : "oneko",
         "Simple - Dark" : "dark",
-        "Simple - Bright" : "bright"
+        "Simple - Bright" : "light"
       },
       "description": "Pick which icon you want to use:"
     },
