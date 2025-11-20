@@ -1,12 +1,31 @@
 {
-  "option_icon" : {
+    "section-general" : {
+		"type" : "section",
+		"description" : "General"
+	},
+    "option_icon" : {
       "type": "combobox",
       "default": "oneko",
-      "options": [
-        ["oneko", "Oneko"],
-        ["dark", "Simple - Dark"],
-        ["bright", "Simple - Bright"]
-      ],
+      "options": {
+        "Oneko" : "oneko",
+        "Simple - Dark" : "dark",
+        "Simple - Bright" : "bright"
+      },
       "description": "Pick which icon you want to use:"
+    },
+    "option_custom" : {
+		"type" : "switch",
+        "default" : false,
+		"description" : "Click to activate custom icons"
+	},
+    "option_running" : {
+        "type" : "filechooser",
+        "description" : "Choose custom running icon",
+        "default" : "~/icons/running.png"
+    },
+    "option_stopped" : {
+        "type" : "filechooser",
+        "description" : "Choose custom stopped icon",
+        "default" : "~/icons/stopped.png"
     }
 }
